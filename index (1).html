@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#030805">
+<title>Aide-mémoire</title>
+<style>
+:root{
+  --fond:#030805; --panneau:#07130b; --bord:#0f5a26; --vert:#00ff41; --vert2:#12c93f; --sombre:#0a3d19;
+  --texte:#8fe6a6; --dim:#4aa066; --rouge:#ff5a5a; --orange:#ffb000; --cyan:#00e5ff; --focus:#00e5ff;
+  --mono:Consolas,"Cascadia Mono","SF Mono","DejaVu Sans Mono","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100dvh;background:var(--fond);color:var(--texte);font:15px/1.5 var(--mono);font-variant-numeric:tabular-nums}
+#pluie{position:fixed;inset:0;width:100%;height:100%;z-index:0;transition:opacity .6s}
+body.connecte #pluie{opacity:.16}
+main{position:relative;z-index:1}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ── connexion */
+#login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:16px}
+.pile{width:min(440px,100%);display:grid;gap:14px}
+.carte-login{width:100%;padding:26px 24px;background:rgba(7,19,11,.94);border:1px solid var(--vert);box-shadow:0 0 28px rgba(0,255,65,.22)}
+.carte-login.demande{padding:16px 24px;border-color:var(--bord);box-shadow:none}
+.carte-login h1{margin:0;text-align:center;font-size:1.25rem;letter-spacing:.06em;color:var(--vert);text-shadow:0 0 10px rgba(0,255,65,.55)}
+#tape{margin:12px 0 4px;min-height:3em;color:var(--vert2);font-size:.85rem;white-space:pre-wrap}
+.etiquette{display:block;margin:14px 0 4px;color:var(--dim);font-size:.75rem;font-weight:700;letter-spacing:.1em}
+.champ{width:100%;padding:11px 12px;background:var(--fond);color:var(--vert);border:1px solid var(--bord);border-radius:0;caret-color:var(--vert);font-size:1.05rem}
+.champ:focus{border-color:var(--vert);outline:none;box-shadow:0 0 0 1px var(--vert)}
+textarea.champ{min-height:84px;resize:vertical;font-size:.8rem;word-break:break-all}
+.bouton{padding:11px 16px;background:var(--sombre);color:var(--vert);border:1px solid var(--bord);border-radius:0;font-weight:700;letter-spacing:.04em;cursor:pointer}
+.bouton:hover:not(:disabled){background:var(--vert);color:var(--fond)}
+.bouton:disabled{color:var(--dim);cursor:not-allowed}
+.bouton.plein{display:block;width:100%;margin-top:18px}
+.bouton.petit{padding:5px 9px;font-size:.85rem}
+.bouton.danger{color:var(--rouge);border-color:#6b1f1f;background:#2a0d0d}
+.bouton.danger:hover:not(:disabled){background:var(--rouge);color:var(--fond)}
+.bouton.orange{color:var(--orange);border-color:#6b4a00;background:#1d1604}
+.bouton.orange:hover:not(:disabled){background:var(--orange);color:var(--fond)}
+.souvenir{display:flex;gap:8px;align-items:center;margin-top:12px;color:var(--dim);font-size:.85rem}
+.souvenir input{width:18px;height:18px;accent-color:var(--vert)}
+.msg{min-height:1.4em;margin-top:12px;font-size:.85rem;font-weight:700}
+.msg.ko{color:var(--rouge)} .msg.ok{color:var(--vert)} .msg.att{color:var(--orange)}
+.note{margin:8px 0 0;color:var(--dim);font-size:.8rem}
+.code-secours{margin-top:10px;padding:10px;background:var(--fond);border:1px dashed var(--orange);color:var(--orange);font-size:.7rem;word-break:break-all;max-height:110px;overflow:auto}
+
+/* ── application */
+#app{max-width:940px;margin:0 auto;padding:18px 16px 56px}
+.entete{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.entete h1{margin:0;font-size:1.3rem;color:var(--vert);letter-spacing:.05em;text-shadow:0 0 10px rgba(0,255,65,.5)}
+.curseur{animation:cl 1.1s steps(1) infinite}
+@keyframes cl{50%{opacity:0}}
+.moi{display:flex;gap:10px;align-items:center;color:var(--cyan);font-weight:700}
+.moi .bouton{padding:6px 10px;font-size:.85rem}
+#stats{margin:4px 0 0;color:var(--dim);font-size:.85rem}
+.onglets{display:flex;gap:6px;margin:16px 0}
+.onglets button{flex:1;padding:11px 6px;background:var(--panneau);color:var(--dim);border:1px solid var(--bord);border-radius:0;font-weight:700;letter-spacing:.05em;cursor:pointer}
+.onglets button[aria-selected="true"]{background:var(--sombre);color:var(--vert);border-color:var(--vert);box-shadow:0 0 12px rgba(0,255,65,.25)}
+.onglets button.alerte{color:var(--orange);border-color:var(--orange)}
+#q{height:66px;padding:0 54px 0 16px;font-size:2rem;font-weight:700;letter-spacing:.06em;border-width:2px}
+#q::placeholder{font-size:.95rem;font-weight:400;letter-spacing:0;color:var(--dim)}
+.rel{position:relative}
+#effacer{position:absolute;right:6px;top:11px;width:44px;height:44px;border:0;background:transparent;color:var(--dim);font-size:1.3rem;cursor:pointer}
+.carte{margin-top:16px;padding:20px;background:var(--panneau);border:1px solid var(--bord)}
+.carte .num{color:var(--dim);font-weight:700}
+.carte .titre{margin:8px 0 12px;font-size:1.05rem;color:var(--texte)}
+.puces{display:flex;flex-wrap:wrap;gap:10px}
+.puce{display:inline-grid;place-items:center;min-width:62px;height:62px;padding:0 10px;background:var(--vert);color:var(--fond);font-size:2.2rem;font-weight:900;box-shadow:0 0 16px rgba(0,255,65,.45)}
+.carte.vide{border-color:#6b4a00;background:#1d1604;color:var(--orange)}
+.carte.vide .num,.carte.vide .titre{color:var(--orange)}
+.aide-debut{margin-top:16px;color:var(--dim)}
+.liste{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.liste button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 14px;background:var(--panneau);color:var(--texte);border:1px solid var(--bord);border-radius:0;font-size:1.05rem;cursor:pointer;text-align:left}
+.liste button:hover{border-color:var(--vert)}
+.liste b{color:var(--texte)} .liste .r{font-weight:900;color:var(--vert)} .liste .r.inconnue{color:var(--dim);font-weight:400}
+.barre{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-bottom:12px}
+.barre select{padding:10px 12px;background:var(--fond);color:var(--vert);border:1px solid var(--bord);border-radius:0}
+.barre label{display:flex;gap:8px;align-items:center;color:var(--dim)}
+.barre input[type=checkbox]{width:18px;height:18px;accent-color:var(--vert)}
+.groupe h2{margin:20px 0 8px;font-size:1rem;color:var(--vert2)}
+.groupe h2 small{color:var(--dim);font-weight:400;margin-left:6px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(124px,1fr));gap:6px}
+.case{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 11px;background:var(--panneau);color:var(--texte);border:1px solid var(--bord);border-radius:0;cursor:pointer}
+.case:hover{border-color:var(--vert)}
+.case .r{font-weight:900;color:var(--vert);letter-spacing:.08em}
+.case.inconnue{background:transparent;border-style:dashed}
+.case.inconnue .r{color:var(--dim);font-weight:400}
+#form-edit{margin-top:16px}
+footer{margin-top:26px;color:var(--dim);font-size:.8rem}
+
+/* ── admin */
+.bloc{margin:0 0 18px;padding:16px;background:var(--panneau);border:1px solid var(--bord)}
+.bloc h2{margin:0 0 12px;font-size:.95rem;color:var(--vert2);letter-spacing:.06em;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.bloc p{margin:6px 0;color:var(--dim);font-size:.85rem}
+.bloc .ligne{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.bloc .ligne>div{flex:1 1 180px}
+.tablo{width:100%;border-collapse:collapse;margin-bottom:6px}
+.tablo th{padding:8px;text-align:left;color:var(--dim);font-size:.75rem;letter-spacing:.1em;border-bottom:1px solid var(--bord)}
+.tablo td{padding:8px;border-bottom:1px solid #0b2a15;color:var(--texte);vertical-align:middle}
+.tablo td.actions{display:flex;flex-wrap:wrap;gap:6px}
+.tablo .admin{color:var(--cyan);font-weight:700}
+.tablo .alerte{color:var(--orange)} .tablo .bad{color:var(--rouge)}
+.vide-liste{color:var(--dim);font-size:.85rem;padding:6px 0}
+.statut-pub{font-weight:700}
+.statut-pub.sale{color:var(--orange)} .statut-pub.propre{color:var(--vert)}
+.invitation{margin-top:12px;padding:12px;background:var(--fond);border:1px dashed var(--vert2);white-space:pre-wrap;word-break:break-all;color:var(--vert)}
+.sujet{display:inline-block;padding:2px 8px;background:var(--fond);border:1px solid var(--bord);color:var(--cyan);word-break:break-all}
+@media (max-width:480px){#q{font-size:1.7rem}.puce{min-width:54px;height:54px;font-size:1.9rem}.carte-login{padding:22px 16px}.carte-login.demande{padding:14px 16px}}
+@media (prefers-reduced-motion:reduce){.curseur{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="pluie" aria-hidden="true"></canvas>
+<noscript><p style="position:relative;z-index:2;padding:20px;color:#ff5a5a">JavaScript est nécessaire pour ouvrir ce site.</p></noscript>
+
+<main>
+  <!-- ═════════ CONNEXION ═════════ -->
+  <section id="login">
+    <div class="pile">
+      <form class="carte-login" id="form-login" autocomplete="off">
+        <h1>▓▒░ ACCÈS RESTREINT ░▒▓</h1>
+        <div id="tape" aria-hidden="true"></div>
+        <label class="etiquette" for="l-id">MATRICULE (4 CHIFFRES)</label>
+        <input class="champ" id="l-id" name="identifiant" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <label class="etiquette" for="l-mdp">MOT DE PASSE</label>
+        <input class="champ" id="l-mdp" name="motdepasse" type="password" autocomplete="current-password">
+        <label class="souvenir"><input type="checkbox" id="l-souvenir"> retenir mon matricule sur cet appareil</label>
+        <button class="bouton plein" id="l-ok" type="submit">[ CONNEXION ]</button>
+        <div class="msg" id="l-msg" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="carte-login demande">
+        <button class="bouton plein" id="d-toggle" type="button" aria-expanded="false" aria-controls="form-demande" style="margin-top:0">[ DEMANDE DE CONNEXION ]</button>
+        <form id="form-demande" autocomplete="off" hidden>
+          <p class="note">Pas encore de compte ? Mets ton matricule et le mot de passe que tu veux utiliser. L'admin reçoit ta demande et la valide : reviens ensuite te connecter avec ces mêmes identifiants.</p>
+          <label class="etiquette" for="d-id">MATRICULE (4 CHIFFRES)</label>
+          <input class="champ" id="d-id" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" spellcheck="false">
+          <label class="etiquette" for="d-mdp">MOT DE PASSE SOUHAITÉ (6 min.)</label>
+          <input class="champ" id="d-mdp" type="password" autocomplete="new-password">
+          <label class="etiquette" for="d-mdp2">RÉPÈTE LE MOT DE PASSE</label>
+          <input class="champ" id="d-mdp2" type="password" autocomplete="new-password">
+          <button class="bouton plein" id="d-ok" type="submit">[ ENVOYER LA DEMANDE ]</button>
+          <div class="msg" id="d-msg" role="status" aria-live="polite"></div>
+          <div id="d-secours" hidden>
+            <div class="code-secours" id="d-code"></div>
+            <button class="bouton petit" id="d-copie" type="button" style="margin-top:8px">[ COPIER LE CODE ]</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ APPLICATION ═════════ -->
+  <section id="app" hidden>
+    <div class="entete">
+      <h1>▓▒░ AIDE-MÉMOIRE ░▒▓<span class="curseur">█</span></h1>
+      <div class="moi"><span id="moi"></span><button class="bouton" id="deco" type="button">[ DÉCONNEXION ]</button></div>
+    </div>
+    <p id="stats"></p>
+
+    <div class="onglets" role="tablist">
+      <button role="tab" id="t-rech" aria-selected="true" aria-controls="v-rech">RECHERCHE</button>
+      <button role="tab" id="t-tab" aria-selected="false" aria-controls="v-tab">TABLEAU</button>
+      <button role="tab" id="t-adm" aria-selected="false" aria-controls="v-adm" hidden>ADMIN</button>
+    </div>
+
+    <section id="v-rech" role="tabpanel" aria-labelledby="t-rech">
+      <div class="rel">
+        <label for="q" class="sr">Numéro de la question</label>
+        <input class="champ" id="q" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="N° de la question (ex : 8123)">
+        <button id="effacer" type="button" aria-label="Effacer" hidden>✕</button>
+      </div>
+      <div id="resultat" aria-live="polite"></div>
+      <ul id="suggestions" class="liste"></ul>
+    </section>
+
+    <section id="v-tab" role="tabpanel" aria-labelledby="t-tab" hidden>
+      <div class="barre">
+        <select id="centaine" aria-label="Centaine"></select>
+        <label><input type="checkbox" id="seulement"> seulement celles à compléter</label>
+      </div>
+      <div id="tableau"></div>
+    </section>
+
+    <section id="v-adm" role="tabpanel" aria-labelledby="t-adm" hidden>
+      <div class="bloc">
+        <h2><span>┤ RÉPONSES DU TABLEAU ├</span></h2>
+        <p>Seul l'admin peut modifier les réponses : onglet RECHERCHE, tape le numéro de la question, un formulaire « ADMIN » apparaît sous la réponse (ça marche aussi pour ajouter une question qui n'existe pas). Les membres ne voient que la réponse.</p>
+        <p>Puis PUBLIER (en bas de cet onglet) pour que tout le monde voie le changement.</p>
+      </div>
+
+      <div class="bloc">
+        <h2><span>┤ DEMANDES DE CONNEXION ├</span><button class="bouton petit" id="dm-maj" type="button">[ ACTUALISER ]</button></h2>
+        <table class="tablo"><thead><tr><th>REÇUE LE</th><th>MATRICULE</th><th>ÉTAT</th><th></th></tr></thead><tbody id="liste-demandes"></tbody></table>
+        <div class="vide-liste" id="dm-vide" hidden>Aucune demande en attente.</div>
+        <div class="msg" id="dm-msg" role="status" aria-live="polite"></div>
+        <p>Vérifie que c'est bien la personne avant d'accepter : n'importe qui peut taper n'importe quel matricule.</p>
+        <p>Notification sur ton téléphone : appli « ntfy » → s'abonner au sujet <span class="sujet" id="dm-sujet"></span></p>
+        <label class="etiquette" for="dm-coller">DEMANDE REÇUE AUTREMENT (code à coller)</label>
+        <textarea class="champ" id="dm-coller" spellcheck="false" placeholder="PC1:…"></textarea>
+        <button class="bouton petit" id="dm-ajout" type="button" style="margin-top:8px">[ AJOUTER CE CODE ]</button>
+      </div>
+
+      <div class="bloc">
+        <h2><span>┤ MEMBRES ├</span></h2>
+        <table class="tablo"><thead><tr><th>MATRICULE</th><th>RÔLE</th><th>CRÉÉ LE</th><th></th></tr></thead><tbody id="liste-membres"></tbody></table>
+      </div>
+
+      <div class="bloc" id="bloc-bloques">
+        <h2><span>┤ BLOQUÉS ├</span></h2>
+        <table class="tablo"><thead><tr><th>MATRICULE</th><th>CRÉÉ LE</th><th>BLOQUÉ LE</th><th></th></tr></thead><tbody id="liste-bloques"></tbody></table>
+        <div class="vide-liste" id="bl-vide" hidden>Personne n'est bloqué.</div>
+        <p>Bloquer = le compte ne marche plus et le tableau est rechiffré avec une nouvelle clé. Les navigateurs où la personne s'est déjà connectée refusent aussi toute autre connexion (sauf la tienne), tant qu'elle ne vide pas les données de son navigateur. Débloquer rend tout comme avant.</p>
+      </div>
+
+      <form class="bloc" id="form-ajout" autocomplete="off">
+        <h2><span>┤ AJOUTER / CHANGER LE MOT DE PASSE D'UN MEMBRE ├</span></h2>
+        <div class="ligne">
+          <div><label class="etiquette" for="a-id" style="margin-top:0">MATRICULE (4 CHIFFRES)</label><input class="champ" id="a-id" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" spellcheck="false"></div>
+          <div><label class="etiquette" for="a-mdp" style="margin-top:0">MOT DE PASSE (6 min.)</label><input class="champ" id="a-mdp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+        </div>
+        <div class="ligne" style="margin-top:12px">
+          <button class="bouton" type="button" id="a-gen">[ GÉNÉRER UN MOT DE PASSE ]</button>
+          <button class="bouton" type="submit" id="a-ok">[ AJOUTER / MODIFIER ]</button>
+        </div>
+        <div class="msg" id="a-msg" role="status" aria-live="polite"></div>
+        <div class="invitation" id="a-invit" hidden></div>
+        <button class="bouton" type="button" id="a-copie" hidden style="margin-top:8px">[ COPIER LE MESSAGE ]</button>
+      </form>
+
+      <form class="bloc" id="form-moi" autocomplete="off">
+        <h2><span>┤ MON MOT DE PASSE ├</span></h2>
+        <div class="ligne">
+          <div><label class="etiquette" for="m-mdp" style="margin-top:0">NOUVEAU MOT DE PASSE (6 min.)</label><input class="champ" id="m-mdp" type="password" autocomplete="new-password"></div>
+          <div style="flex:0 0 auto"><button class="bouton" type="submit">[ CHANGER ]</button></div>
+        </div>
+        <div class="msg" id="m-msg" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="bloc">
+        <h2><span>┤ PUBLICATION ├</span></h2>
+        <p class="statut-pub propre" id="pub-statut">✔ Rien à publier.</p>
+        <p>Les changements (comptes, blocages) ne sont réels pour les autres qu'une fois publiés. Colle ici un « token » GitHub pour publier d'un clic, ou télécharge le fichier et dépose-le toi-même sur GitHub.</p>
+        <div class="ligne">
+          <div><label class="etiquette" for="p-depot" style="margin-top:0">DÉPÔT</label><input class="champ" id="p-depot" type="text" value="modrinth-officiel/PassportCheat" autocomplete="off" spellcheck="false"></div>
+          <div><label class="etiquette" for="p-token" style="margin-top:0">TOKEN GITHUB</label><input class="champ" id="p-token" type="password" autocomplete="off" placeholder="github_pat_…"></div>
+        </div>
+        <label class="souvenir"><input type="checkbox" id="p-retenir"> retenir le token sur cet appareil (déconseillé sur un ordi partagé)</label>
+        <div class="ligne" style="margin-top:12px">
+          <button class="bouton" type="button" id="p-pub">[ PUBLIER SUR GITHUB ]</button>
+          <button class="bouton" type="button" id="p-dl">[ TÉLÉCHARGER acces.json ]</button>
+        </div>
+        <div class="msg" id="p-msg" role="status" aria-live="polite"></div>
+        <p>Créer le token : GitHub → Settings → Developer settings → Fine-grained tokens → accès au seul dépôt PassportCheat, permission « Contents : Read and write ».</p>
+      </div>
+    </section>
+
+    <footer id="pied"></footer>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var ENC = new TextEncoder(), DEC = new TextDecoder();
+  var $ = function (s) { return document.querySelector(s); };
+  var ID_VALIDE = /^\d{4}$/;           // matricule : 4 chiffres, obligatoire
+
+  // ════════════ petits outils ════════════
+  function b64(u8) {
+    var s = '';
+    for (var i = 0; i < u8.length; i += 0x4000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x4000));
+    return btoa(s);
+  }
+  function unb64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function hex(u8) { return Array.prototype.map.call(u8, function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+  function alea(n) { return crypto.getRandomValues(new Uint8Array(n)); }
+  function pause(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function mot(el, texte, etat) { el.textContent = texte; el.className = 'msg' + (etat ? ' ' + etat : ''); }
+  function lsGet(k, s) { try { return (s ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v, s) { try { (s ? sessionStorage : localStorage).setItem(k, v); } catch (e) {} }
+  function lsDel(k, s) { try { (s ? sessionStorage : localStorage).removeItem(k); } catch (e) {} }
+  function aujourdhui() { return new Date().toISOString().slice(0, 10); }
+  function chiffres(t) { return String(t || '').replace(/\D/g, ''); }
+  function unique(a) { return a.filter(function (x, i) { return a.indexOf(x) === i; }); }
+
+  // ════════════ chiffrement : PBKDF2-SHA256 → AES-256-GCM ════════════
+  async function deriver(ident, mdp, sel, iter) {
+    var base = await crypto.subtle.importKey('raw', ENC.encode(ident.toLowerCase() + ':' + mdp.normalize('NFC')), 'PBKDF2', false, ['deriveBits']);
+    return new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: sel, iterations: iter }, base, 256));
+  }
+  async function chiffrer(cle, clair, aad) {
+    var iv = alea(12), k = await crypto.subtle.importKey('raw', cle, 'AES-GCM', false, ['encrypt']);
+    var ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv, additionalData: ENC.encode(aad) }, k, clair));
+    return { iv: b64(iv), ct: b64(ct) };
+  }
+  async function dechiffrer(cle, bloc, aad) {
+    var k = await crypto.subtle.importKey('raw', cle, 'AES-GCM', false, ['decrypt']);
+    return new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(bloc.iv), additionalData: ENC.encode(aad) }, k, unb64(bloc.ct)));
+  }
+  async function sha(txt) { return hex(new Uint8Array(await crypto.subtle.digest('SHA-256', ENC.encode(txt)))).slice(0, 32); }
+
+  // ── demandes de connexion : chiffrées avec la clé publique de l'admin (RSA-OAEP + AES-GCM)
+  var RSA = { name: 'RSA-OAEP', hash: 'SHA-256' };
+  async function chiffrerDemande(pubB64, obj) {
+    var pub = await crypto.subtle.importKey('spki', unb64(pubB64), RSA, false, ['encrypt']);
+    var aes = alea(32), blocs = await chiffrer(aes, ENC.encode(JSON.stringify(obj)), 'demande');
+    var cle = new Uint8Array(await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, pub, aes));
+    return 'PC1:' + b64(cle) + '.' + blocs.iv + '.' + blocs.ct;
+  }
+  async function lireDemande(privB64, code) {
+    try {
+      code = String(code).trim();
+      if (code.indexOf('PC1:') !== 0) return null;
+      var p = code.slice(4).split('.'); if (p.length !== 3) return null;
+      var priv = await crypto.subtle.importKey('pkcs8', unb64(privB64), RSA, false, ['decrypt']);
+      var aes = new Uint8Array(await crypto.subtle.decrypt({ name: 'RSA-OAEP' }, priv, unb64(p[0])));
+      var o = JSON.parse(DEC.decode(await dechiffrer(aes, { iv: p[1], ct: p[2] }, 'demande')));
+      if (!o || !ID_VALIDE.test(String(o.m)) || typeof o.p !== 'string' || o.p.length < 6 || o.p.length > 64 || typeof o.t !== 'number') return null;
+      return { m: o.m, p: o.p, t: o.t };
+    } catch (e) { return null; }
+  }
+
+  // ── appareil : ce navigateur retient les matricules qui s'y sont connectés (localStorage + cookie).
+  //    Si l'un d'eux est bloqué, plus aucune connexion n'est acceptée ici (sauf l'admin), même avec un autre compte.
+  function cookieGet(n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : null; }
+  function historique() {
+    var l = [];
+    [lsGet('pc_hist', false), cookieGet('pc_hist')].forEach(function (t) {
+      String(t || '').split('.').forEach(function (x) { if (ID_VALIDE.test(x) && l.indexOf(x) < 0) l.push(x); });
+    });
+    return l;
+  }
+  function noterHistorique(id) {
+    var l = historique(); if (l.indexOf(id) < 0) l.push(id);
+    var t = l.slice(-50).join('.');
+    lsSet('pc_hist', t, false);
+    try { document.cookie = 'pc_hist=' + t + '; max-age=31536000; path=/; SameSite=Lax'; } catch (e) {}
+  }
+  function appareilBloque(id) {
+    if (!accesBrut) return false;
+    if (accesBrut.membres.some(function (m) { return m.admin && m.id === id; })) return false;
+    var blq = accesBrut.bloques || [];
+    return historique().some(function (x) { return blq.indexOf(x) >= 0; });
+  }
+
+  // ════════════ état de la session ════════════
+  var S = null;
+  function coffreVide() { return { v: 2, mdp: {}, blq: {}, priv: null }; }
+  function normaliserCoffre(o) {
+    if (o && o.v === 2) { o.mdp = o.mdp || {}; o.blq = o.blq || {}; delete o.app; if (!('priv' in o)) o.priv = null; return o; }
+    var c = coffreVide();                          // ancien format : { matricule: mot de passe }
+    Object.keys(o || {}).forEach(function (k) { if (typeof o[k] === 'string') c.mdp[k] = o[k]; });
+    return c;
+  }
+  function etatVide() {
+    return { acces: null, K: null, wAdmin: null, coffre: coffreVide(), user: null, D: null, Q: new Map(), modifs: 0, exporte: false, donneesSales: false, sigBase: '', demandes: [], minuteur: null };
+  }
+  function note() { S.modifs++; S.exporte = false; }
+  function signature(acces) {
+    return JSON.stringify([acces.membres.map(function (m) { return [m.id.toLowerCase(), m.sel, m.iv, m.ct]; }).sort(), acces.bloques || [], (acces.donnees && acces.donnees.ct) || '']);
+  }
+
+  // ════════════ pluie de caractères ════════════
+  (function pluie() {
+    var c = $('#pluie'), x = c.getContext('2d'), T = 16, CAR = '0123456789ABCDEF<>/\\|+=*#$%&@', w, h, col, y, timer;
+    function init() {
+      w = c.width = window.innerWidth; h = c.height = window.innerHeight;
+      col = Math.ceil(w / T); y = []; for (var i = 0; i < col; i++) y.push(Math.floor(Math.random() * -h / T));
+      x.fillStyle = '#030805'; x.fillRect(0, 0, w, h);
+    }
+    function pas() {
+      x.fillStyle = 'rgba(3,8,5,0.09)'; x.fillRect(0, 0, w, h);
+      x.font = '15px monospace';
+      for (var i = 0; i < col; i++) {
+        var py = y[i] * T, ch = CAR.charAt(Math.floor(Math.random() * CAR.length));
+        x.fillStyle = '#00ff41'; x.fillText(ch, i * T, py);
+        x.fillStyle = '#d9ffe3'; x.fillText(CAR.charAt(Math.floor(Math.random() * CAR.length)), i * T, py + T);
+        if (py > h && Math.random() > 0.975) y[i] = 0; else y[i]++;
+      }
+    }
+    function marche() { if (timer || document.hidden) return; timer = setInterval(pas, 70); }
+    function arret() { clearInterval(timer); timer = null; }
+    init(); window.addEventListener('resize', init);
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { pas(); return; }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) arret(); else marche(); });
+    marche();
+  })();
+
+  // ════════════ chargement de acces.json ════════════
+  var accesBrut = null;
+  async function chargerAcces() {
+    var r = await fetch('acces.json', { cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    var j = await r.json();
+    if (!j || !Array.isArray(j.membres) || !j.donnees) throw new Error('format');
+    accesBrut = j;
+  }
+
+  // ════════════ écran de connexion ════════════
+  var echecs = 0, verrou = 0;
+  function taper() {
+    var lignes = ["> AUTOÉVAL // MODULE D'ACCÈS v3.0", '> authentification requise_'], el = $('#tape'), l = 0, c = 0;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = lignes.join('\n'); return; }
+    (function boucle() {
+      if (l >= lignes.length) return;
+      el.textContent = lignes.slice(0, l).concat([lignes[l].slice(0, c + 1)]).join('\n');
+      if (c + 1 >= lignes[l].length) { l++; c = 0; setTimeout(boucle, 260); } else { c++; setTimeout(boucle, 24); }
+    })();
+  }
+  async function valider(ev) {
+    ev.preventDefault();
+    var msg = $('#l-msg'), bouton = $('#l-ok');
+    if (Date.now() < verrou) return;
+    if (!window.crypto || !crypto.subtle) { mot(msg, 'Ouvre le site en https (le chiffrement est indisponible ici).', 'ko'); return; }
+    var id = chiffres($('#l-id').value), mdp = $('#l-mdp').value;
+    if (!ID_VALIDE.test(id)) { mot(msg, 'Ton matricule = 4 chiffres.', 'ko'); return; }
+    if (!mdp) { mot(msg, 'Mot de passe obligatoire.', 'ko'); return; }
+    bouton.disabled = true; mot(msg, 'vérification…', 'att');
+    try {
+      if (!accesBrut) await chargerAcces();
+    } catch (e) {
+      bouton.disabled = false; mot(msg, 'Impossible de charger acces.json (' + e.message + '). Réessaie dans une minute.', 'ko'); return;
+    }
+    if ((accesBrut.bloques || []).indexOf(id) >= 0) { bouton.disabled = false; $('#l-mdp').value = ''; mot(msg, "ACCÈS BLOQUÉ — contacte l'admin.", 'ko'); return; }
+    if (appareilBloque(id)) { bouton.disabled = false; $('#l-mdp').value = ''; mot(msg, "ACCÈS BLOQUÉ SUR CET APPAREIL — contacte l'admin.", 'ko'); return; }
+    var res = await connexion(id, mdp);
+    if (res) {
+      mot(msg, 'ACCÈS AUTORISÉ — bienvenue ' + res.user.id + ' [' + (res.user.admin ? 'ADMIN' : 'MEMBRE') + ']', 'ok');
+      if (!res.user.admin) noterHistorique(id);
+      if ($('#l-souvenir').checked) lsSet('pc_id', id, false); else lsDel('pc_id', false);
+      $('#l-mdp').value = '';
+      echecs = 0;
+      await pause(600);
+      await ouvrirApp(res.etat);
+      bouton.disabled = false;
+      return;
+    }
+    echecs++;
+    $('#l-mdp').value = '';
+    if (echecs >= 5) {
+      echecs = 0; verrou = Date.now() + 30000; compte();
+    } else {
+      bouton.disabled = false;
+      mot(msg, 'ACCÈS REFUSÉ — matricule ou mot de passe incorrect (' + echecs + '/5)', 'ko');
+      $('#l-mdp').focus();
+    }
+  }
+  function compte() {
+    var reste = Math.ceil((verrou - Date.now()) / 1000), msg = $('#l-msg'), bouton = $('#l-ok');
+    if (reste > 0) { bouton.disabled = true; mot(msg, "TROP D'ESSAIS — verrouillé encore " + reste + ' s', 'att'); setTimeout(compte, 1000); }
+    else { bouton.disabled = false; mot(msg, '', ''); }
+  }
+  async function connexion(id, mdp) {
+    var acces = accesBrut, m = acces.membres.find(function (x) { return x.id.toLowerCase() === id.toLowerCase(); });
+    if (!m) { await deriver(id, mdp, alea(16), acces.iter); return null; }     // même durée de calcul
+    var w = await deriver(m.id, mdp, unb64(m.sel), acces.iter), K;
+    try { K = await dechiffrer(w, m, m.id.toLowerCase()); } catch (e) { return null; }
+    var D;
+    try { D = JSON.parse(DEC.decode(await dechiffrer(K, acces.donnees, 'donnees'))); } catch (e) { return null; }
+    var st = etatVide();
+    st.acces = JSON.parse(JSON.stringify(acces)); st.K = K; st.D = D; st.sigBase = signature(acces);
+    st.user = { id: m.id, admin: false };
+    if (m.admin && acces.coffre) {
+      try {
+        st.coffre = normaliserCoffre(JSON.parse(DEC.decode(await dechiffrer(w, acces.coffre, 'coffre'))));
+        st.wAdmin = w; st.user.admin = true;
+      } catch (e) { /* pas admin */ }
+    }
+    return { user: st.user, etat: st };
+  }
+
+  // ════════════ demande de connexion (côté visiteur) ════════════
+  async function envoyerDemande(ev) {
+    ev.preventDefault();
+    var msg = $('#d-msg'), id = chiffres($('#d-id').value), p1 = $('#d-mdp').value, p2 = $('#d-mdp2').value;
+    $('#d-secours').hidden = true;
+    if (!window.crypto || !crypto.subtle) { mot(msg, 'Ouvre le site en https.', 'ko'); return; }
+    if (!ID_VALIDE.test(id)) { mot(msg, 'Ton matricule = 4 chiffres.', 'ko'); return; }
+    if (p1.length < 6) { mot(msg, 'Mot de passe : 6 caractères minimum.', 'ko'); return; }
+    if (p1.length > 64) { mot(msg, 'Mot de passe : 64 caractères maximum.', 'ko'); return; }
+    if (p1 !== p2) { mot(msg, 'Les deux mots de passe sont différents.', 'ko'); return; }
+    try { if (!accesBrut) await chargerAcces(); } catch (e) { mot(msg, 'Impossible de charger acces.json (' + e.message + ').', 'ko'); return; }
+    if ((accesBrut.bloques || []).indexOf(id) >= 0) { mot(msg, "Ce matricule est bloqué — contacte l'admin.", 'ko'); return; }
+    if (appareilBloque(id)) { mot(msg, "ACCÈS BLOQUÉ SUR CET APPAREIL — contacte l'admin.", 'ko'); return; }
+    if (accesBrut.membres.some(function (m) { return m.id === id; })) { mot(msg, "Ce matricule a déjà un compte : connecte-toi (mot de passe perdu ? préviens l'admin).", 'ko'); return; }
+    var cfg = accesBrut.demandes;
+    if (!cfg || !cfg.pub || !cfg.topic) { mot(msg, "Les demandes ne sont pas encore ouvertes : préviens l'admin.", 'ko'); return; }
+    var dernier = Number(lsGet('pc_dem_t', false) || 0);
+    if (Date.now() - dernier < 30000) { mot(msg, 'Patiente quelques secondes avant de renvoyer une demande.', 'att'); return; }
+    $('#d-ok').disabled = true; mot(msg, 'chiffrement et envoi…', 'att');
+    try {
+      var code = await chiffrerDemande(cfg.pub, { m: id, p: p1, t: Date.now() });
+      lsSet('pc_dem_t', String(Date.now()), false);
+      var envoye = false;
+      try {
+        var r = await fetch(String(cfg.serveur || 'https://ntfy.sh').replace(/\/$/, '') + '/' + encodeURIComponent(cfg.topic), { method: 'POST', body: code });
+        envoye = r.ok;
+      } catch (e) { envoye = false; }
+      if (envoye) {
+        mot(msg, "Demande envoyée ✔ — l'admin doit la valider. Reviens te connecter avec ton matricule et ce mot de passe quand il t'aura prévenu.", 'ok');
+        $('#d-mdp').value = ''; $('#d-mdp2').value = '';
+      } else {
+        mot(msg, "Envoi automatique impossible. Copie ce code et envoie-le à l'admin (message) : il pourra valider ta demande.", 'att');
+        $('#d-code').textContent = code; $('#d-secours').hidden = false;
+      }
+    } catch (e) { mot(msg, 'Erreur : ' + e.message, 'ko'); }
+    $('#d-ok').disabled = false;
+  }
+
+  // ════════════ application (recherche + tableau) ════════════
+  var entree, res, sug, groupes;
+  function puces(c) { return c.split('').map(function (d) { return '<span class="puce">' + d + '</span>'; }).join(''); }
+  function texteRep(c) { return c.split('').join(' '); }
+  function majStats() {
+    var total = 0, rem = 0; S.Q.forEach(function (e) { total++; if (e.c) rem++; });
+    $('#stats').textContent = rem + ' réponses relevées sur ' + total + ' questions';
+    $('#pied').textContent = 'Mis à jour le ' + S.D.maj + '. Les chiffres sont les cases à cocher (1 = la première de la liste).';
+  }
+  async function ouvrirApp(etat) {
+    S = etat;
+    S.D.q.forEach(function (x) { S.Q.set(x[0], { c: x[1], hp: false }); });
+    S.D.hp.forEach(function (x) { S.Q.set(x[0], { c: x[1], hp: true }); });
+    majStats();
+    $('#moi').textContent = S.user.id + '@' + (S.user.admin ? 'admin' : 'membre');
+    $('#t-adm').hidden = !S.user.admin;
+    $('#login').hidden = true; $('#app').hidden = false; document.body.classList.add('connecte');
+    prepTableau();
+    montrer('rech');
+    var depart = chiffres(location.hash);
+    rechercher(depart);
+    if (!depart && !(window.matchMedia && matchMedia('(pointer:coarse)').matches)) entree.focus();
+    if (S.user.admin) {
+      try { await assurerDemandes(); } catch (e) { /* on réessaiera */ }
+      if (S === etat) rendreAdmin();
+      fetchDemandes(true);
+      var etat0 = S;
+      S.minuteur = setInterval(function () { if (S === etat0 && !document.hidden) fetchDemandes(true); }, 45000);
+    }
+  }
+  function deconnexion() {
+    if (S && S.user && S.user.admin && S.modifs > 0 && !S.exporte && !confirm('Des changements ne sont pas publiés. Quitter quand même ?')) return;
+    if (S && S.minuteur) clearInterval(S.minuteur);
+    S = null; $('#app').hidden = true; $('#login').hidden = false; document.body.classList.remove('connecte');
+    res.innerHTML = ''; sug.innerHTML = ''; $('#tableau').innerHTML = ''; entree.value = '';
+    ['#a-id', '#a-mdp', '#m-mdp', '#dm-coller'].forEach(function (s) { $(s).value = ''; });
+    $('#a-invit').textContent = ''; $('#a-invit').hidden = true; $('#a-copie').hidden = true;
+    $('#liste-demandes').textContent = ''; $('#t-adm').textContent = 'ADMIN'; $('#t-adm').classList.remove('alerte');
+    ['#a-msg', '#m-msg', '#p-msg', '#dm-msg'].forEach(function (s) { mot($(s), '', ''); });
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    mot($('#l-msg'), 'Déconnecté.', 'ok'); $('#l-mdp').focus();
+    chargerAcces().catch(function () {});     // on repart d'une version fraîche
+  }
+  function carte(n, e) {
+    if (e.c) return '<div class="carte"><div class="num">Question n° ' + n + '</div><div class="titre">' + (e.c.length > 1 ? 'Bonnes réponses' : 'Bonne réponse') + '</div><div class="puces">' + puces(e.c) + '</div></div>';
+    return '<div class="carte vide"><div class="num">Question n° ' + n + '</div><div class="titre">Réponse pas encore relevée</div><p>Le numéro est dans le tableau, mais personne n\'a encore noté sa réponse.</p></div>';
+  }
+  function carteAbsente(n) {
+    return '<div class="carte vide"><div class="num">Question n° ' + n + '</div><div class="titre">Numéro absent du tableau</div><p>Vérifie le numéro, ou cette question n\'a pas encore été rencontrée.</p></div>';
+  }
+  function editeur(n, e) {
+    if (!S || !S.user.admin) return '';
+    return '<form class="bloc" id="form-edit" data-n="' + n + '" autocomplete="off"><h2><span>┤ ADMIN : ' + (e ? 'MODIFIER LA RÉPONSE' : 'AJOUTER CETTE QUESTION') + ' ├</span></h2>' +
+      '<div class="ligne"><div><label class="etiquette" for="ed-rep" style="margin-top:0">BONNES RÉPONSES (chiffres 1 à 9' + (e ? ', vide = pas relevée' : '') + ')</label>' +
+      '<input class="champ" id="ed-rep" type="text" inputmode="numeric" maxlength="12" autocomplete="off" value="' + (e ? e.c : '') + '"></div>' +
+      '<div style="flex:0 0 auto"><button class="bouton" type="submit">[ ENREGISTRER ]</button></div></div>' +
+      '<div class="msg" id="ed-msg" role="status" aria-live="polite"></div></form>';
+  }
+  function sauverReponse(n, brut) {
+    if (!S || !S.user.admin) return;
+    var msg = $('#ed-msg'), sans = String(brut).replace(/[\s,;.\-]/g, '');
+    if (/[^1-9]/.test(sans)) { mot(msg, 'Que des chiffres de 1 à 9 (exemple : 12).', 'ko'); return; }
+    var c = unique(sans.split('')).sort().join(''), ancien = S.Q.get(n);
+    if (!ancien && !c) { mot(msg, 'Mets au moins une réponse pour ajouter cette question.', 'ko'); return; }
+    if (ancien && ancien.c === c) { mot(msg, 'Rien à changer.', 'att'); return; }
+    var liste = ancien && !ancien.hp ? S.D.q : S.D.hp, i = liste.findIndex(function (x) { return x[0] === n; });
+    if (i >= 0) liste[i][1] = c; else { liste.push([n, c]); liste.sort(function (a, b) { return a[0] - b[0]; }); }
+    S.Q.set(n, { c: c, hp: ancien ? ancien.hp : true });
+    var d = new Date(); S.D.maj = ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+    S.donneesSales = true; note(); majStats(); majStatutPub();
+    $('#tableau').innerHTML = ''; prepTableau();
+    var e = S.Q.get(n); res.innerHTML = carte(n, e) + editeur(n, e);
+    mot($('#ed-msg'), (ancien ? 'Réponse modifiée' : 'Question ajoutée (hors grille)') + ' — pense à PUBLIER.', 'ok');
+  }
+  function majHash(t) { try { history.replaceState(null, '', t ? '#' + t : location.pathname + location.search); } catch (e) {} }
+  function rechercher(brut) {
+    if (!S) return;
+    var t = chiffres(brut).slice(0, 6);
+    if (entree.value !== t) entree.value = t;
+    $('#effacer').hidden = !t;
+    sug.innerHTML = '';
+    if (!t) { res.innerHTML = '<p class="aide-debut">Tape le numéro affiché sur la page (« Question n° … »). La réponse apparaît tout de suite.</p>'; majHash(''); return; }
+    var n = Number(t), e = S.Q.get(n);
+    if (t.length >= 4 && e) { res.innerHTML = carte(n, e) + editeur(n, e); majHash(t); return; }
+    if (t.length >= 4) { res.innerHTML = carteAbsente(n) + editeur(n, null); majHash(''); return; }
+    majHash('');
+    var ids = [];
+    S.Q.forEach(function (_, k) { if (String(k).indexOf(t) === 0) ids.push(k); });
+    ids.sort(function (a, b) { return a - b; });
+    if (!ids.length) { res.innerHTML = '<p class="aide-debut">Aucun numéro ne commence par ' + t + '.</p>'; return; }
+    res.innerHTML = '';
+    sug.innerHTML = ids.slice(0, 30).map(function (k) {
+      var c = S.Q.get(k).c;
+      return '<li><button type="button" data-n="' + k + '"><b>' + k + '</b><span class="r' + (c ? '' : ' inconnue') + '">' + (c ? texteRep(c) : 'pas relevée') + '</span></button></li>';
+    }).join('') + (ids.length > 30 ? '<li class="aide-debut">… et ' + (ids.length - 30) + ' autres : continue de taper.</li>' : '');
+  }
+  function prepTableau() {
+    groupes = new Map();
+    var tri = Array.from(S.Q.keys()).sort(function (a, b) { return a - b; });
+    tri.filter(function (n) { return !S.Q.get(n).hp; }).forEach(function (n) {
+      var g = String(Math.floor(n / 100) * 100); if (!groupes.has(g)) groupes.set(g, []); groupes.get(g).push(n);
+    });
+    var hg = tri.filter(function (n) { return S.Q.get(n).hp; }); if (hg.length) groupes.set('hp', hg);
+    $('#centaine').innerHTML = '<option value="">Toutes les centaines</option>' + Array.from(groupes.keys()).map(function (g) {
+      return '<option value="' + g + '">' + (g === 'hp' ? 'Hors grille' : g + ' à ' + (Number(g) + 99)) + '</option>';
+    }).join('');
+    $('#seulement').checked = false;
+  }
+  function rendreTableau() {
+    if (!S) return;
+    var choix = $('#centaine').value, seul = $('#seulement').checked, html = '';
+    groupes.forEach(function (liste, g) {
+      if (choix && choix !== g) return;
+      var ok = liste.filter(function (n) { return S.Q.get(n).c; }).length;
+      var aff = seul ? liste.filter(function (n) { return !S.Q.get(n).c; }) : liste;
+      if (!aff.length) return;
+      html += '<div class="groupe"><h2>' + (g === 'hp' ? 'Hors grille' : g + ' à ' + (Number(g) + 99)) + '<small>' + ok + ' / ' + liste.length + ' relevées</small></h2><div class="grille">' +
+        aff.map(function (n) {
+          var c = S.Q.get(n).c;
+          return '<button type="button" class="case' + (c ? '' : ' inconnue') + '" data-n="' + n + '"><b>' + n + '</b><span class="r">' + (c ? texteRep(c) : '?') + '</span></button>';
+        }).join('') + '</div></div>';
+    });
+    $('#tableau').innerHTML = html || '<p class="aide-debut">Rien à afficher ici.</p>';
+  }
+  function montrer(nom) {
+    ['rech', 'tab', 'adm'].forEach(function (n) {
+      $('#v-' + n).hidden = n !== nom; $('#t-' + n).setAttribute('aria-selected', n === nom ? 'true' : 'false');
+    });
+    if (nom === 'tab' && !$('#tableau').children.length) rendreTableau();
+    if (nom === 'adm') { rendreAdmin(); fetchDemandes(true); }
+  }
+
+  // ════════════ panneau admin ════════════
+  function majStatutPub() {
+    var el = $('#pub-statut');
+    if (S && S.modifs > 0 && S.exporte) { el.textContent = '⬇ Fichier téléchargé : dépose-le sur GitHub pour que ce soit réel.'; el.className = 'statut-pub sale'; }
+    else if (S && S.modifs > 0) { el.textContent = '● ' + S.modifs + ' modification' + (S.modifs > 1 ? 's' : '') + ' pas encore publiée' + (S.modifs > 1 ? 's' : '') + '.'; el.className = 'statut-pub sale'; }
+    else { el.textContent = '✔ Rien à publier.'; el.className = 'statut-pub propre'; }
+  }
+  function cell(tr, texte, classe) { var td = document.createElement('td'); td.textContent = texte; if (classe) td.className = classe; tr.appendChild(td); return td; }
+  function bouton(texte, classe, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'bouton petit ' + (classe || ''); b.textContent = texte;
+    b.addEventListener('click', function () { fn(b); }); return b;
+  }
+  function rendreAdmin() {
+    if (!S || !S.user.admin) return;
+    var tb = $('#liste-membres'); tb.textContent = '';
+    S.acces.membres.slice().sort(function (a, b) { return (b.admin ? 1 : 0) - (a.admin ? 1 : 0) || a.id.localeCompare(b.id); }).forEach(function (m) {
+      var tr = document.createElement('tr');
+      cell(tr, m.id); cell(tr, m.admin ? 'ADMIN' : 'MEMBRE', m.admin ? 'admin' : ''); cell(tr, m.cree || '');
+      var t4 = cell(tr, '', 'actions');
+      if (!m.admin) {
+        t4.appendChild(bouton('[ BLOQUER ]', 'orange', function (b) { bloquer(m.id, b); }));
+        t4.appendChild(bouton('[ RETIRER ]', 'danger', function (b) { retirer(m.id, b); }));
+      }
+      tb.appendChild(tr);
+    });
+    var tbb = $('#liste-bloques'); tbb.textContent = '';
+    var ids = Object.keys(S.coffre.blq).sort();
+    ids.forEach(function (k) {
+      var r = S.coffre.blq[k], tr = document.createElement('tr');
+      cell(tr, r.id || k, 'bad'); cell(tr, r.cree || ''); cell(tr, r.bloque || '');
+      cell(tr, '', 'actions').appendChild(bouton('[ DÉBLOQUER ]', '', function (b) { debloquer(k, b); }));
+      tbb.appendChild(tr);
+    });
+    $('#bl-vide').hidden = ids.length > 0;
+    $('#dm-sujet').textContent = (S.acces.demandes && S.acces.demandes.topic) || '(pas encore créé)';
+    majStatutPub(); rendreDemandes();
+    var tok = lsGet('pc_tok', true) || lsGet('pc_tok', false);
+    if (tok && !$('#p-token').value) $('#p-token').value = tok;
+    $('#p-retenir').checked = !!lsGet('pc_tok', false);
+  }
+  function mdpAlea() {
+    var A = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', s = '', r = alea(14);
+    for (var i = 0; i < 14; i++) s += A.charAt(r[i] % A.length);
+    return s;
+  }
+  function verifMdp(pw) {
+    if (pw.length < 6) return 'Mot de passe : 6 caractères minimum.';
+    if (pw.length > 64) return 'Mot de passe : 64 caractères maximum.';
+    return '';
+  }
+  // crée (ou met à jour) un compte membre : utilisé par le formulaire et par « accepter une demande »
+  async function creerCompte(id, pw) {
+    if (!ID_VALIDE.test(id)) throw new Error('Matricule = 4 chiffres.');
+    var admin = S.acces.membres.find(function (m) { return m.admin; });
+    if (id === admin.id) throw new Error("Ce matricule est celui de l'admin : utilise « MON MOT DE PASSE ».");
+    if ((S.acces.bloques || []).indexOf(id) >= 0) throw new Error('Ce matricule est bloqué : débloque-le d\'abord.');
+    var e = verifMdp(pw); if (e) throw new Error(e);
+    var sel = alea(16), w = await deriver(id, pw, sel, S.acces.iter), blocs = await chiffrer(w, S.K, id.toLowerCase());
+    var i = S.acces.membres.findIndex(function (m) { return m.id === id; }), ancien = i >= 0 ? S.acces.membres[i] : null;
+    var nouveau = { id: id, admin: false, sel: b64(sel), iv: blocs.iv, ct: blocs.ct, cree: (ancien && ancien.cree) || aujourdhui() };
+    if (i >= 0) S.acces.membres[i] = nouveau; else S.acces.membres.push(nouveau);
+    S.coffre.mdp[id] = pw;
+    note();
+    return ancien ? 'mis à jour' : 'créé';
+  }
+  async function ajouterMembre(ev) {
+    ev.preventDefault();
+    var msg = $('#a-msg'), id = chiffres($('#a-id').value), pw = $('#a-mdp').value;
+    $('#a-invit').hidden = true; $('#a-copie').hidden = true;
+    $('#a-ok').disabled = true; mot(msg, 'chiffrement…', 'att');
+    try {
+      var etat = await creerCompte(id, pw);
+      mot(msg, 'Compte « ' + id + ' » ' + etat + ' — pense à PUBLIER.', 'ok');
+      $('#a-invit').textContent = 'Site : ' + location.origin + location.pathname + '\nMatricule : ' + id + '\nMot de passe : ' + pw;
+      $('#a-invit').hidden = false; $('#a-copie').hidden = false;
+      $('#a-mdp').value = ''; rendreAdmin();
+    } catch (e) { mot(msg, e.message, 'ko'); }
+    $('#a-ok').disabled = false;
+  }
+  // change la clé de chiffrement du tableau (pour que quelqu'un qui part ne puisse plus rien lire de nouveau)
+  async function rotation(reste) {
+    var sansMdp = reste.filter(function (m) { return !m.admin && !S.coffre.mdp[m.id.toLowerCase()] && !S.coffre.mdp[m.id]; });
+    if (sansMdp.length) throw new Error('mot de passe inconnu pour : ' + sansMdp.map(function (m) { return m.id; }).join(', ') + " (ré-ajoute-les d'abord)");
+    var nouvelleK = alea(32), donnees = await chiffrer(nouvelleK, ENC.encode(JSON.stringify(S.D)), 'donnees'), refaits = [];
+    for (var i = 0; i < reste.length; i++) {
+      var m = reste[i], w = m.admin ? S.wAdmin : await deriver(m.id, S.coffre.mdp[m.id.toLowerCase()] || S.coffre.mdp[m.id], unb64(m.sel), S.acces.iter);
+      var b = await chiffrer(w, nouvelleK, m.id.toLowerCase());
+      refaits.push(Object.assign({}, m, { iv: b.iv, ct: b.ct }));
+    }
+    S.acces.membres = refaits; S.acces.donnees = donnees; S.K = nouvelleK;
+  }
+  function oublier(id) { delete S.coffre.mdp[id]; }
+  function recalculerBloques() { S.acces.bloques = Object.keys(S.coffre.blq).sort(); }
+  async function retirer(id, bouton) {
+    if (!confirm('Retirer « ' + id + ' » définitivement ? Le tableau sera rechiffré avec une nouvelle clé.')) return;
+    var msg = $('#a-msg'); bouton.disabled = true; mot(msg, 'rechiffrement en cours…', 'att');
+    try {
+      await rotation(S.acces.membres.filter(function (m) { return m.id !== id; }));
+      oublier(id); note();
+      mot(msg, 'Compte « ' + id + ' » retiré — pense à PUBLIER.', 'ok');
+    } catch (e) { mot(msg, 'Impossible : ' + e.message, 'ko'); }
+    rendreAdmin();
+  }
+  async function bloquer(id, bouton) {
+    if (!confirm('Bloquer « ' + id + ' » ? Il ne pourra plus se connecter, ni avec son compte ni depuis ses navigateurs habituels, jusqu\'à ce que tu le débloques.')) return;
+    var msg = $('#a-msg'); bouton.disabled = true; mot(msg, 'blocage en cours…', 'att');
+    try {
+      var m = S.acces.membres.find(function (x) { return x.id === id; });
+      await rotation(S.acces.membres.filter(function (x) { return x.id !== id; }));
+      S.coffre.blq[id] = { id: id, mdp: S.coffre.mdp[id] || null, cree: m.cree || '', bloque: aujourdhui() };
+      oublier(id); recalculerBloques(); note();
+      mot(msg, 'Compte « ' + id + ' » bloqué — pense à PUBLIER.', 'ok');
+    } catch (e) { mot(msg, 'Impossible : ' + e.message, 'ko'); }
+    rendreAdmin();
+  }
+  async function debloquer(id, bouton) {
+    var msg = $('#a-msg'), rec = S.coffre.blq[id]; if (!rec) return;
+    var pw = rec.mdp;
+    if (!pw) { pw = prompt('Choisis un nouveau mot de passe pour ' + id + ' (6 caractères minimum) :') || ''; var e = verifMdp(pw); if (e) { mot(msg, e, 'ko'); return; } }
+    bouton.disabled = true; mot(msg, 'déblocage en cours…', 'att');
+    try {
+      var sel = alea(16), w = await deriver(id, pw, sel, S.acces.iter), blocs = await chiffrer(w, S.K, id.toLowerCase());
+      S.acces.membres.push({ id: id, admin: false, sel: b64(sel), iv: blocs.iv, ct: blocs.ct, cree: rec.cree || aujourdhui() });
+      S.coffre.mdp[id] = pw;
+      delete S.coffre.blq[id]; recalculerBloques(); note();
+      mot(msg, 'Compte « ' + id + ' » débloqué — pense à PUBLIER.', 'ok');
+    } catch (e2) { mot(msg, 'Impossible : ' + e2.message, 'ko'); }
+    rendreAdmin();
+  }
+  async function changerMonMdp(ev) {
+    ev.preventDefault();
+    var msg = $('#m-msg'), pw = $('#m-mdp').value, e = verifMdp(pw);
+    if (e) { mot(msg, e, 'ko'); return; }
+    mot(msg, 'chiffrement…', 'att');
+    try {
+      var m = S.acces.membres.find(function (x) { return x.admin; }), sel = alea(16), w = await deriver(m.id, pw, sel, S.acces.iter), b = await chiffrer(w, S.K, m.id.toLowerCase());
+      m.sel = b64(sel); m.iv = b.iv; m.ct = b.ct; S.wAdmin = w; note();
+      $('#m-mdp').value = ''; mot(msg, 'Mot de passe changé — pense à PUBLIER.', 'ok'); majStatutPub();
+    } catch (e2) { mot(msg, 'Erreur : ' + e2.message, 'ko'); }
+  }
+
+  // ── réception des demandes
+  async function assurerDemandes() {
+    if (S.acces.demandes && S.acces.demandes.pub && S.coffre.priv) return;
+    var kp = await crypto.subtle.generateKey({ name: 'RSA-OAEP', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['encrypt', 'decrypt']);
+    S.coffre.priv = b64(new Uint8Array(await crypto.subtle.exportKey('pkcs8', kp.privateKey)));
+    S.acces.demandes = { pub: b64(new Uint8Array(await crypto.subtle.exportKey('spki', kp.publicKey))), topic: 'pcdem-' + hex(alea(10)), serveur: 'https://ntfy.sh' };
+    note();
+  }
+  function ignorees() { try { return JSON.parse(lsGet('pc_dem_ign', false) || '[]'); } catch (e) { return []; } }
+  function ignorer(cle) { var l = ignorees(); l.push(cle); lsSet('pc_dem_ign', JSON.stringify(l.slice(-300)), false); }
+  function ajouterDemande(d) {
+    S.demandes = S.demandes.filter(function (x) { return x.m !== d.m; });
+    S.demandes.push(d); S.demandes.sort(function (a, b) { return b.t - a.t; });
+  }
+  async function fetchDemandes(silencieux) {
+    var etat = S; if (!etat || !etat.user.admin || !etat.acces.demandes || !etat.coffre.priv) return;
+    var msg = $('#dm-msg'), cfg = etat.acces.demandes;
+    try {
+      var r = await fetch(String(cfg.serveur).replace(/\/$/, '') + '/' + encodeURIComponent(cfg.topic) + '/json?poll=1&since=all', { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      var lignes = (await r.text()).split('\n'), ign = ignorees(), trouvees = [];
+      for (var i = 0; i < lignes.length; i++) {
+        var o; try { o = JSON.parse(lignes[i]); } catch (e) { continue; }
+        if (!o || o.event !== 'message' || typeof o.message !== 'string') continue;
+        var cle = await sha(o.message.trim()); if (ign.indexOf(cle) >= 0) continue;
+        var d = await lireDemande(etat.coffre.priv, o.message); if (d) { d.cle = cle; trouvees.push(d); }
+      }
+      if (S !== etat) return;
+      var gardees = etat.demandes.filter(function (x) { return x.manuelle; });
+      etat.demandes = gardees; trouvees.forEach(function (d) { ajouterDemande(d); });
+      if (!silencieux) mot(msg, trouvees.length ? trouvees.length + ' demande(s) reçue(s).' : 'Aucune nouvelle demande.', 'ok');
+    } catch (e) { if (!silencieux) mot(msg, 'Impossible de lire les demandes (' + e.message + ').', 'ko'); }
+    if (S === etat) rendreDemandes();
+  }
+  function rendreDemandes() {
+    if (!S || !S.user.admin) return;
+    var tb = $('#liste-demandes'); tb.textContent = '';
+    S.demandes.forEach(function (d) {
+      var tr = document.createElement('tr'), etat, classe = '';
+      var existe = S.acces.membres.some(function (m) { return m.id === d.m; }), bloque = (S.acces.bloques || []).indexOf(d.m) >= 0;
+      if (bloque) { etat = '⛔ matricule bloqué'; classe = 'bad'; }
+      else if (existe) { etat = '⚠ a déjà un compte (remplacerait son mot de passe)'; classe = 'alerte'; }
+      else etat = 'nouveau ✓';
+      cell(tr, new Date(d.t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })); cell(tr, d.m); cell(tr, etat, classe);
+      var a = cell(tr, '', 'actions');
+      a.appendChild(bouton('[ ACCEPTER ]', '', function (b) { accepter(d, b); }));
+      a.appendChild(bouton('[ REFUSER ]', 'danger', function () { refuser(d); }));
+      tb.appendChild(tr);
+    });
+    $('#dm-vide').hidden = S.demandes.length > 0;
+    var n = S.demandes.length, onglet = $('#t-adm');
+    onglet.textContent = n ? 'ADMIN (' + n + ')' : 'ADMIN'; onglet.classList.toggle('alerte', n > 0);
+  }
+  async function accepter(d, bouton) {
+    var msg = $('#dm-msg');
+    if ((S.acces.bloques || []).indexOf(d.m) >= 0) { mot(msg, 'Ce matricule est bloqué : débloque-le d\'abord.', 'ko'); return; }
+    var existe = S.acces.membres.some(function (m) { return m.id === d.m; });
+    if (existe && !confirm('Le matricule ' + d.m + ' a déjà un compte. Accepter remplace son mot de passe. Continuer ?')) return;
+    bouton.disabled = true; mot(msg, 'création du compte…', 'att');
+    try {
+      await creerCompte(d.m, d.p);
+      if (d.cle) ignorer(d.cle);
+      S.demandes = S.demandes.filter(function (x) { return x !== d; });
+      mot(msg, 'Compte ' + d.m + ' créé — pense à PUBLIER, puis préviens la personne.', 'ok');
+    } catch (e) { mot(msg, e.message, 'ko'); }
+    rendreAdmin();
+  }
+  function refuser(d) {
+    if (d.cle) ignorer(d.cle);
+    S.demandes = S.demandes.filter(function (x) { return x !== d; });
+    mot($('#dm-msg'), 'Demande ' + d.m + ' refusée.', 'ok'); rendreDemandes();
+  }
+  async function collerCode() {
+    var msg = $('#dm-msg'), code = $('#dm-coller').value.trim();
+    var d = await lireDemande(S.coffre.priv, code);
+    if (!d) { mot(msg, "Code illisible : il doit commencer par PC1: et venir du formulaire.", 'ko'); return; }
+    d.cle = await sha(code); d.manuelle = true; ajouterDemande(d); $('#dm-coller').value = '';
+    mot(msg, 'Demande de ' + d.m + ' ajoutée.', 'ok'); rendreDemandes();
+  }
+
+  // ── publication
+  async function exporter() {
+    if (S.donneesSales) { S.acces.donnees = await chiffrer(S.K, ENC.encode(JSON.stringify(S.D)), 'donnees'); S.donneesSales = false; }
+    var coffre = await chiffrer(S.wAdmin, ENC.encode(JSON.stringify(S.coffre)), 'coffre');
+    var o = { v: 1, iter: S.acces.iter, membres: S.acces.membres, bloques: S.acces.bloques || [] };
+    if (S.acces.demandes) o.demandes = S.acces.demandes;
+    o.coffre = coffre; o.donnees = S.acces.donnees;
+    return JSON.stringify(o, null, 1);
+  }
+  async function telecharger() {
+    var msg = $('#p-msg');
+    try {
+      var texte = await exporter(), a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([texte], { type: 'application/json' })); a.download = 'acces.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      S.exporte = true; majStatutPub();
+      mot(msg, "Fichier téléchargé : dépose-le dans le dépôt GitHub (Add file → Upload files), il remplace l'ancien.", 'ok');
+    } catch (e) { mot(msg, 'Erreur : ' + e.message, 'ko'); }
+  }
+  async function publier() {
+    var msg = $('#p-msg'), token = $('#p-token').value.trim(), depot = $('#p-depot').value.trim();
+    if (!/^[\w.-]+\/[\w.-]+$/.test(depot)) { mot(msg, 'Dépôt : écris « proprietaire/depot ».', 'ko'); return; }
+    if (!token) { mot(msg, 'Colle ton token GitHub (ou utilise le téléchargement).', 'ko'); return; }
+    if ($('#p-retenir').checked) { lsSet('pc_tok', token, false); lsDel('pc_tok', true); } else { lsSet('pc_tok', token, true); lsDel('pc_tok', false); }
+    var url = 'https://api.github.com/repos/' + depot + '/contents/acces.json';
+    var entetes = { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+    $('#p-pub').disabled = true; mot(msg, 'publication…', 'att');
+    try {
+      var g = await fetch(url, { headers: entetes, cache: 'no-store' }), sha1;
+      if (g.status === 200) {
+        var cur = await g.json(); sha1 = cur.sha;
+        var distant = JSON.parse(DEC.decode(unb64(String(cur.content).replace(/\s/g, ''))));
+        if (signature(distant) !== S.sigBase) throw new Error('le fichier sur GitHub a changé depuis ta connexion. Recharge la page (Ctrl+F5), reconnecte-toi et refais la modification.');
+      } else if (g.status !== 404) throw new Error(erreurApi(g.status));
+      var texte = await exporter();
+      var corps = { message: 'Mise à jour des accès', content: b64(ENC.encode(texte)) }; if (sha1) corps.sha = sha1;
+      var p = await fetch(url, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, entetes), body: JSON.stringify(corps) });
+      if (!p.ok) throw new Error(erreurApi(p.status));
+      S.modifs = 0; S.exporte = false; S.sigBase = signature(S.acces); majStatutPub();
+      mot(msg, "Publié ✔ — le site se met à jour d'ici 1 à 2 minutes (puis Ctrl+F5).", 'ok');
+    } catch (e) { mot(msg, 'Échec : ' + e.message, 'ko'); }
+    $('#p-pub').disabled = false;
+  }
+  function erreurApi(st) {
+    if (st === 401) return 'token refusé (expiré ou faux).';
+    if (st === 403 || st === 404) return 'accès refusé : le token doit avoir « Contents : Read and write » sur ce dépôt.';
+    if (st === 409 || st === 422) return 'conflit sur le fichier : recharge la page et réessaie.';
+    return 'erreur GitHub ' + st + '.';
+  }
+
+  // ════════════ branchements ════════════
+  entree = $('#q'); res = $('#resultat'); sug = $('#suggestions');
+  $('#form-login').addEventListener('submit', valider);
+  $('#l-id').addEventListener('input', function () { this.value = chiffres(this.value).slice(0, 4); });
+  $('#d-id').addEventListener('input', function () { this.value = chiffres(this.value).slice(0, 4); });
+  $('#a-id').addEventListener('input', function () { this.value = chiffres(this.value).slice(0, 4); });
+  $('#d-toggle').addEventListener('click', function () {
+    var f = $('#form-demande'); f.hidden = !f.hidden; this.setAttribute('aria-expanded', f.hidden ? 'false' : 'true');
+    if (!f.hidden) $('#d-id').focus();
+  });
+  $('#form-demande').addEventListener('submit', envoyerDemande);
+  $('#d-copie').addEventListener('click', function () {
+    var t = $('#d-code').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { mot($('#d-msg'), 'Code copié : envoie-le à l\'admin.', 'ok'); }, function () { mot($('#d-msg'), 'Copie impossible : sélectionne le code à la main.', 'att'); });
+  });
+  $('#deco').addEventListener('click', deconnexion);
+  entree.addEventListener('input', function () { rechercher(entree.value); });
+  entree.addEventListener('focus', function () { entree.select(); });
+  entree.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { var b = sug.querySelector('button'); if (b) rechercher(b.dataset.n); } });
+  $('#effacer').addEventListener('click', function () { rechercher(''); entree.focus(); });
+  res.addEventListener('submit', function (ev) { if (ev.target.id !== 'form-edit') return; ev.preventDefault(); sauverReponse(Number(ev.target.dataset.n), $('#ed-rep').value); });
+  sug.addEventListener('click', function (ev) { var b = ev.target.closest('button[data-n]'); if (b) { rechercher(b.dataset.n); entree.focus(); } });
+  $('#t-rech').addEventListener('click', function () { montrer('rech'); });
+  $('#t-tab').addEventListener('click', function () { montrer('tab'); });
+  $('#t-adm').addEventListener('click', function () { montrer('adm'); });
+  $('#centaine').addEventListener('change', rendreTableau);
+  $('#seulement').addEventListener('change', rendreTableau);
+  $('#tableau').addEventListener('click', function (ev) { var b = ev.target.closest('button[data-n]'); if (b) { montrer('rech'); rechercher(b.dataset.n); window.scrollTo(0, 0); } });
+  $('#form-ajout').addEventListener('submit', ajouterMembre);
+  $('#a-gen').addEventListener('click', function () { $('#a-mdp').value = mdpAlea(); });
+  $('#a-copie').addEventListener('click', function () {
+    var t = $('#a-invit').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { mot($('#a-msg'), 'Message copié.', 'ok'); }, function () { mot($('#a-msg'), 'Copie impossible : sélectionne le texte à la main.', 'att'); });
+  });
+  $('#form-moi').addEventListener('submit', changerMonMdp);
+  $('#dm-maj').addEventListener('click', function () { fetchDemandes(false); });
+  $('#dm-ajout').addEventListener('click', collerCode);
+  $('#p-pub').addEventListener('click', publier);
+  $('#p-dl').addEventListener('click', telecharger);
+  window.addEventListener('beforeunload', function (ev) { if (S && S.user && S.user.admin && S.modifs > 0 && !S.exporte) { ev.preventDefault(); ev.returnValue = ''; } });
+  window.addEventListener('hashchange', function () {
+    if (!S) return; var h = chiffres(location.hash); if (h && h !== entree.value) { montrer('rech'); rechercher(h); }
+  });
+
+  var idMemo = lsGet('pc_id', false);
+  if (idMemo) { $('#l-id').value = chiffres(idMemo).slice(0, 4); $('#l-souvenir').checked = true; $('#l-mdp').focus(); } else { $('#l-id').focus(); }
+  taper();
+  chargerAcces().catch(function (e) { mot($('#l-msg'), 'Impossible de charger acces.json (' + e.message + ').', 'ko'); });
+})();
+</script>
+</body>
+</html>
